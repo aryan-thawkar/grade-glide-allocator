@@ -36,10 +36,12 @@ const ResultsDisplay = ({ data }: ResultsDisplayProps) => {
     
     const matchesDepartment = filterDepartment === "all" || allocation.department === filterDepartment;
     
-    const matchesAllocation = 
-      allocationType === "all" || 
-      (allocationType === "allocated" && allocation.allocatedCourse) || 
-      (allocationType === "unallocated" && !allocation.allocatedCourse);
+    let matchesAllocation = true;
+    if (allocationType === "allocated") {
+      matchesAllocation = !!allocation.allocatedCourse && allocation.allocatedCourse !== "";
+    } else if (allocationType === "unallocated") {
+      matchesAllocation = !allocation.allocatedCourse || allocation.allocatedCourse === "";
+    }
     
     return matchesSearch && matchesDepartment && matchesAllocation;
   });
@@ -56,9 +58,9 @@ const ResultsDisplay = ({ data }: ResultsDisplayProps) => {
             <CardTitle className="text-xl text-blue-800">Allocation Summary</CardTitle>
           </CardHeader>
           <CardContent className="pt-4">
-            <Tabs defaultValue="all" onValueChange={setAllocationType} className="w-full">
+            <Tabs value={allocationType} onValueChange={setAllocationType} className="w-full">
               <TabsList className="grid w-full grid-cols-3 mb-4">
-                <TabsTrigger value="all" className="relative">
+                <TabsTrigger value="all" className="relative font-medium">
                   <div className="flex items-center gap-2">
                     <FileText className="w-4 h-4" />
                     <span>All Students</span>
@@ -67,7 +69,7 @@ const ResultsDisplay = ({ data }: ResultsDisplayProps) => {
                     {data.stats.totalStudents}
                   </div>
                 </TabsTrigger>
-                <TabsTrigger value="allocated" className="relative">
+                <TabsTrigger value="allocated" className="relative font-medium">
                   <div className="flex items-center gap-2">
                     <UserCheck className="w-4 h-4" />
                     <span>Allocated</span>
@@ -76,7 +78,7 @@ const ResultsDisplay = ({ data }: ResultsDisplayProps) => {
                     {data.stats.allocatedStudents}
                   </div>
                 </TabsTrigger>
-                <TabsTrigger value="unallocated" className="relative">
+                <TabsTrigger value="unallocated" className="relative font-medium">
                   <div className="flex items-center gap-2">
                     <UserX className="w-4 h-4" />
                     <span>Unallocated</span>
@@ -88,12 +90,12 @@ const ResultsDisplay = ({ data }: ResultsDisplayProps) => {
               </TabsList>
               
               <div className="grid grid-cols-3 gap-6 mb-4 text-center">
-                <div className="bg-blue-50 rounded-lg p-4">
+                <div className={`rounded-lg p-4 ${allocationType === "all" ? "bg-blue-100 ring-2 ring-blue-500" : "bg-blue-50"} transition-all`}>
                   <p className="text-sm text-blue-600 font-medium">Total Students</p>
                   <p className="text-3xl font-bold text-blue-800">{data.stats.totalStudents}</p>
                   <p className="text-xs text-blue-500 mt-1">100%</p>
                 </div>
-                <div className="bg-green-50 rounded-lg p-4">
+                <div className={`rounded-lg p-4 ${allocationType === "allocated" ? "bg-green-100 ring-2 ring-green-500" : "bg-green-50"} transition-all`}>
                   <p className="text-sm text-green-600 font-medium">Allocated</p>
                   <p className="text-3xl font-bold text-green-700">{data.stats.allocatedStudents}</p>
                   <p className="text-xs text-green-500 mt-1">
@@ -102,7 +104,7 @@ const ResultsDisplay = ({ data }: ResultsDisplayProps) => {
                       : 0}%
                   </p>
                 </div>
-                <div className="bg-red-50 rounded-lg p-4">
+                <div className={`rounded-lg p-4 ${allocationType === "unallocated" ? "bg-red-100 ring-2 ring-red-500" : "bg-red-50"} transition-all`}>
                   <p className="text-sm text-red-600 font-medium">Unallocated</p>
                   <p className="text-3xl font-bold text-red-700">{data.stats.unallocatedStudents}</p>
                   <p className="text-xs text-red-500 mt-1">
@@ -130,10 +132,25 @@ const ResultsDisplay = ({ data }: ResultsDisplayProps) => {
 
       <Card className="shadow-md border border-slate-200">
         <CardHeader className="pb-2 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-t-lg">
-          <CardTitle className="text-xl text-blue-800">
-            {allocationType === "all" && "All Students"}
-            {allocationType === "allocated" && "Allocated Students"}
-            {allocationType === "unallocated" && "Unallocated Students"}
+          <CardTitle className="text-xl text-blue-800 flex items-center">
+            {allocationType === "all" && (
+              <>
+                <FileText className="w-5 h-5 mr-2" />
+                All Students ({filteredAllocations.length})
+              </>
+            )}
+            {allocationType === "allocated" && (
+              <>
+                <UserCheck className="w-5 h-5 mr-2 text-green-600" />
+                Allocated Students ({filteredAllocations.length})
+              </>
+            )}
+            {allocationType === "unallocated" && (
+              <>
+                <UserX className="w-5 h-5 mr-2 text-red-500" />
+                Unallocated Students ({filteredAllocations.length})
+              </>
+            )}
           </CardTitle>
         </CardHeader>
         <CardContent>

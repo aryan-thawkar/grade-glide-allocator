@@ -34,7 +34,7 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center">
             <div>
-              <h1 className="text-3xl font-bold">Grade Glide Allocator</h1>
+              <h1 className="text-3xl font-bold">AlgoAllocator</h1>
               <p className="mt-2 text-blue-100">Efficiently allocate courses based on student preferences and CGPA</p>
             </div>
             {processedData && (
@@ -64,7 +64,7 @@ const Index = () => {
               <div className="text-center space-y-6 py-12">
                 <h1 className="text-4xl font-bold text-gray-900 md:text-5xl">Streamline Your Course Allocation Process</h1>
                 <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                  Grade Glide Allocator helps educational institutions allocate courses to students 
+                  AlgoAllocator helps educational institutions allocate courses to students 
                   based on their preferences and academic performance, efficiently and fairly.
                 </p>
                 <div className="flex flex-wrap justify-center gap-4 pt-4">
@@ -207,7 +207,7 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-8">
             <div>
-              <h3 className="text-xl font-bold mb-3">Grade Glide Allocator</h3>
+              <h3 className="text-xl font-bold mb-3">AlgoAllocator</h3>
               <p className="text-gray-300 max-w-md">A powerful tool for educational institutions to streamline course allocation based on student preferences and performance.</p>
             </div>
             <div className="md:text-right">
@@ -234,7 +234,7 @@ const Index = () => {
                   </button>
                 )}
               </div>
-              <p className="text-gray-400 mt-6">© 2025 Grade Glide Allocator. All rights reserved.</p>
+              <p className="text-gray-400 mt-6">© 2025 AlgoAllocator. All rights reserved.</p>
             </div>
           </div>
         </div>
